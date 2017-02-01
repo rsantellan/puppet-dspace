@@ -143,7 +143,7 @@ define dspace::install ($owner             = $dspace::owner,
        group   => $group,
        mode    => 0644,
        source  => $local_config_source,
-       require => Exec["Checkout branch ${git_branch}"],
+       #require => Exec["Checkout branch ${git_branch}"],
        before  => Exec["Build DSpace installer in ${src_dir}"],
      }
    }
@@ -155,7 +155,7 @@ define dspace::install ($owner             = $dspace::owner,
        group   => $group,
        mode    => 0644,
        content => template("dspace/local.cfg.erb"),
-       require => Exec["Checkout branch ${git_branch}"],
+       #require => Exec["Checkout branch ${git_branch}"],
        before  => Exec["Build DSpace installer in ${src_dir}"],
      }
 
