@@ -107,16 +107,16 @@ define dspace::install ($owner             = $dspace::owner,
 
     ### END clone of DSpace
 
-->
+#->
 
     # Checkout the specified branch
-    exec { "Checkout branch ${git_branch}" :
-       command => "git checkout ${git_branch}",
-       cwd     => $src_dir, # run command from this directory
-       user    => $owner,
+#    exec { "Checkout branch ${git_branch}" :
+#       command => "git checkout ${git_branch}",
+#       cwd     => $src_dir, # run command from this directory
+#       user    => $owner,
        # Only perform this checkout if the branch EXISTS and it is NOT currently checked out (if checked out it will have '*' next to it in the branch listing)
-       onlyif  => "git branch -a | grep -w '${git_branch}' && git branch | grep '^\\*' | grep -v '^\\* ${git_branch}\$'",
-    }
+#       onlyif  => "git branch -a | grep -w '${git_branch}' && git branch | grep '^\\*' | grep -v '^\\* ${git_branch}\$'",
+#    }
 
 ->
 
