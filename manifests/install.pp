@@ -138,7 +138,7 @@ define dspace::install ($owner             = $dspace::owner,
 
    # Create a 'local.cfg' file from our default template
    file { "${src_dir}/dspace/config/local.cfg":
-     ensure  => file,
+     ensure  => present,
      owner   => $owner,
      group   => $group,
      mode    => 0644,
