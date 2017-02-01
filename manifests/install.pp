@@ -131,23 +131,6 @@ define dspace::install ($owner             = $dspace::owner,
      content => template("dspace/custom.properties.erb"),
    }
 
-
-
-   # Decide whether to initialize local.cfg (required for DSpace 6+) from a provided file ($local_source_config)
-   # Or from the default template (local.cfg.erb)
-
-   # Create a 'local.cfg' file from our default template
-   file { "${src_dir}/dspace/config/local.cfg":
-     ensure  => present,
-     owner   => $owner,
-     group   => $group,
-     mode    => 0644,
-     content => template("dspace/local.cfg.erb"),
-     #require => Exec["Checkout branch ${git_branch}"],
-     before  => Exec["Build DSpace installer in ${src_dir}"],
-   }
-
-
    # Build DSpace installer.
    # (NOTE: by default, $mvn_params='-Denv=custom', which tells Maven to use the custom.properties file created above)
    exec { "Build DSpace installer in ${src_dir}":
