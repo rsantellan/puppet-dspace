@@ -135,30 +135,16 @@ define dspace::install ($owner             = $dspace::owner,
 
    # Decide whether to initialize local.cfg (required for DSpace 6+) from a provided file ($local_source_config)
    # Or from the default template (local.cfg.erb)
-   if $local_config_source {
-     # Initialize local.cfg from provided source file
-     file { "${src_dir}/dspace/config/local.cfg":
-       ensure  => file,
-       owner   => $owner,
-       group   => $group,
-       mode    => 0644,
-       source  => $local_config_source,
-       #require => Exec["Checkout branch ${git_branch}"],
-       before  => Exec["Build DSpace installer in ${src_dir}"],
-     }
-   }
-   else {
-     # Create a 'local.cfg' file from our default template
-     file { "${src_dir}/dspace/config/local.cfg":
-       ensure  => file,
-       owner   => $owner,
-       group   => $group,
-       mode    => 0644,
-       content => template("dspace/local.cfg.erb"),
-       #require => Exec["Checkout branch ${git_branch}"],
-       before  => Exec["Build DSpace installer in ${src_dir}"],
-     }
 
+   # Create a 'local.cfg' file from our default template
+   file { "${src_dir}/dspace/config/local.cfg":
+     ensure  => file,
+     owner   => $owner,
+     group   => $group,
+     mode    => 0644,
+     content => template("dspace/local.cfg.erb"),
+     #require => Exec["Checkout branch ${git_branch}"],
+     before  => Exec["Build DSpace installer in ${src_dir}"],
    }
 
 
