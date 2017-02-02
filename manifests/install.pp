@@ -67,18 +67,18 @@ define dspace::install ($owner             = $dspace::owner,
         mode   => 0700,
     }
 
-->
+#->
 
     ### BEGIN clone of DSpace from GitHub to ~/dspace-src (this is a bit of a strange way to ckeck out, we do it this
     ### way to support cases where src_dir already exists)
 
     # if the src_dir folder does not yet exist, create it
-    file { "${src_dir}":
-        ensure => directory,
-        owner  => $owner,
-        group  => $group,
-        mode   => 0700,
-    }
+#    file { "${src_dir}":
+#        ensure => directory,
+#        owner  => $owner,
+#        group  => $group,
+#        mode   => 0700,
+#    }
 
 #->
     # ensure the GitHub SSH host authenticity is handled before we check out anything
@@ -134,11 +134,11 @@ define dspace::install ($owner             = $dspace::owner,
    # Build DSpace installer.
    # (NOTE: by default, $mvn_params='-Denv=custom', which tells Maven to use the custom.properties file created above)
    exec { "Build DSpace installer in ${src_dir}":
-     command   => "mvn package ${mvn_params}",
+     command   => "echo 'mvn package ${mvn_params}'",
      cwd       => "${src_dir}", # Run command from this directory
      user      => $owner,
-     subscribe => File["${src_dir}/dspace/config/local.cfg"], # If local.cfg changes, rebuild
-     refreshonly => true,  # Only run if local.cfg changes
+     #subscribe => File["${src_dir}/dspace/config/local.cfg"], # If local.cfg changes, rebuild
+     #refreshonly => true,  # Only run if local.cfg changes
      timeout   => 0, # Disable timeout. This build takes a while!
      logoutput => true,    # Send stdout to puppet log file (if any)
      notify    => Exec["Install DSpace to ${install_dir}"],  # Notify installation to run
@@ -147,7 +147,7 @@ define dspace::install ($owner             = $dspace::owner,
    # Install DSpace (via Ant)
    exec { "Install DSpace to ${install_dir}":
      # If DSpace installed, this is an update. Otherwise a fresh_install
-     command   => "if [ -f ${install_dir}/bin/dspace ]; then ant update; else ant fresh_install; fi",
+     command   => "if [ -f ${install_dir}/bin/dspace ]; then echo 'ant update'; else echo 'ant fresh_install'; fi",
      provider  => shell,   # Run as a shell command
      cwd       => $ant_installer_path,    # Run command from this directory
      user      => $owner,
@@ -159,7 +159,7 @@ define dspace::install ($owner             = $dspace::owner,
    if $admin_email and $admin_passwd and $admin_firstname and $admin_lastname and $admin_language
    {
      exec { "Create DSpace Administrator":
-       command   => "${install_dir}/bin/dspace create-administrator -e ${admin_email} -f ${admin_firstname} -l ${admin_lastname} -p ${admin_passwd} -c ${admin_language}",
+       command   => "echo '${install_dir}/bin/dspace create-administrator -e ${admin_email} -f ${admin_firstname} -l ${admin_lastname} -p ${admin_passwd} -c ${admin_language}'",
        cwd       => $install_dir,
        user      => $owner,
        logoutput => true,
