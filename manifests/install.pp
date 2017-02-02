@@ -149,10 +149,8 @@ define dspace::install ($owner             = $dspace::owner,
      # If DSpace installed, this is an update. Otherwise a fresh_install
      command   => "if [ -f ${install_dir}/bin/dspace ]; then echo 'ant update'; else echo 'ant fresh_install'; fi",
      provider  => shell,   # Run as a shell command
-     cwd       => $ant_installer_path,    # Run command from this directory
      user      => $owner,
      logoutput => true,    # Send stdout to puppet log file (if any)
-     refreshonly => true,  # Only run when triggered (by build)
    }
 
    # Create initial administrator (if specified)
